@@ -1,0 +1,15 @@
+[project]
+name = "nba-intelligence"
+version = "0.1.0"
+description = "Databricks lakehouse turning NBA stats, ESPN fantasy league data and news into 9-cat fantasy decisions."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Fuad Gafarzada" }]
+# Matches Databricks serverless (environment versions 3-6 all ship Python 3.12.3).
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "databricks-connect~=18.3.0",
+]
