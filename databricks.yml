@@ -1,0 +1,40 @@
+# Databricks Asset Bundle for nba-intelligence.
+# Docs: https://docs.databricks.com/dev-tools/bundles/index.html
+#
+# One workspace (Free Edition), so dev and prod are separated by catalog:
+#   dev  -> nba_dev   (bronze / silver / gold schemas)
+#   prod -> nba_prod  (bronze / silver / gold schemas)
+bundle:
+  name: nba_intelligence
+  uuid: 98f244bc-89e5-4653-8548-3af2d6cb6104
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog for this target (nba_dev or nba_prod).
+
+targets:
+  dev:
+    # 'mode: development' prefixes deployed resources with '[dev <user>]'
+    # and pauses job schedules and triggers.
+    # See https://docs.databricks.com/dev-tools/bundles/deployment-modes.html
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-f7b8452b-a4c0.cloud.databricks.com
+    variables:
+      catalog: nba_dev
+
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-f7b8452b-a4c0.cloud.databricks.com
+      # Deploy to one fixed path so there is only ever a single prod copy.
+      root_path: /Workspace/Users/fuadgafarzada@gmail.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: nba_prod
+    permissions:
+      - user_name: fuadgafarzada@gmail.com
+        level: CAN_MANAGE

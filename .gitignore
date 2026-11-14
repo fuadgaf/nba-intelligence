@@ -221,3 +221,6 @@ __marimo__/
 
 # files
 CLAUDE.local.md
+
+# Databricks Asset Bundles: local deploy state and build output
+.databricks/

@@ -4,6 +4,7 @@
 # 1) versions are pinned in uv.lock and match CI;
 # 2) no generated .exe launchers are needed (laptop's defender policy blocks it).
 # typical client site problem, so we avoid it by using uv run python -m ... to run the hooks.
+# if ruff reformats something, run git add -A and commit again
 repos:
   - repo: local
     hooks:

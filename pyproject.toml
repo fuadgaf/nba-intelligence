@@ -21,6 +21,8 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+# Respect excludes (e.g. .vscode/) even when pre-commit passes file paths explicitly
+force-exclude = true
 
 [tool.ruff.lint]
 select = [

@@ -1,0 +1,30 @@
+{
+    // Databricks notebooks saved as .py files use these cell markers
+    "jupyter.interactiveWindow.cellMarker.codeRegex": "^# COMMAND ----------|^# Databricks notebook source|^(#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
+    "jupyter.interactiveWindow.cellMarker.default": "# COMMAND ----------",
+
+    "files.exclude": {
+        "**/*.egg-info": true,
+        "**/__pycache__": true,
+        ".pytest_cache": true,
+        ".ruff_cache": true,
+        "dist": true
+    },
+
+    // Python: the uv-managed .venv (Windows path; on macOS/Linux use .venv/bin/python)
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": ["src"],
+    "python.analysis.stubPath": ".vscode",
+
+    // Tests: pytest reads testpaths and options from pyproject.toml
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [],
+
+    // Format with ruff on save, using the same config as pre-commit and CI
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true
+    }
+}
