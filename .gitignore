@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# files
+CLAUDE.local.md
+
+# Databricks Asset Bundles: local deploy state and build output
+.databricks/

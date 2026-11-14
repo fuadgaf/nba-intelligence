@@ -1,0 +1,40 @@
+[project]
+name = "nba-intelligence"
+version = "0.1.0"
+description = "Databricks lakehouse turning NBA stats, ESPN fantasy league data and news into 9-cat fantasy decisions."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Fuad Gafarzada" }]
+# Matches Databricks serverless (environment versions 3-6 all ship Python 3.12.3).
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "databricks-connect~=18.3.0",
+    "pre-commit>=4.7.0",
+    "pre-commit-hooks>=6.0.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.4",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# Respect excludes (e.g. .vscode/) even when pre-commit passes file paths explicitly
+force-exclude = true
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes: unused imports, undefined names
+    "I",   # import sorting
+    "UP",  # pyupgrade: modern Python 3.12 syntax
+    "B",   # flake8-bugbear: likely bugs
+    "SIM", # flake8-simplify
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"

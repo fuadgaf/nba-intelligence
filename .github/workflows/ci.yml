@@ -1,0 +1,44 @@
+# CI: runs on every pull request into main. Must pass before merging.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to the same PR cancels the older, now-outdated run
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: lint, test, validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: true
+
+      # --locked: fail if uv.lock is out of date, so CI installs exactly what was tested locally
+      - name: Install dependencies
+        run: uv sync --locked
+
+      # The same hooks as the local pre-commit: hygiene checks, ruff and pytest
+      - name: Pre-commit checks
+        run: uv run python -m pre_commit run --all-files --show-diff-on-failure
+
+      - uses: databricks/setup-cli@v1.24.0
+
+      - name: Validate bundle (dev and prod)
+        env:
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: |
+          databricks bundle validate -t dev
+          databricks bundle validate -t prod
