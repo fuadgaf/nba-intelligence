@@ -1,0 +1,62 @@
+# Runs on every `git commit`. Run on everything: uv run python -m pre_commit run --all-files
+#
+# Hooks are `local` and run from the project's .venv through `uv run python -m ...`, so:
+# 1) versions are pinned in uv.lock and match CI;
+# 2) no generated .exe launchers are needed (laptop's defender policy blocks it).
+# typical client site problem, so we avoid it by using uv run python -m ... to run the hooks.
+repos:
+  - repo: local
+    hooks:
+      # general hygiene checks (from the pre-commit-hooks package)
+      - id: trailing-whitespace
+        name: trim trailing whitespace
+        entry: uv run python -m pre_commit_hooks.trailing_whitespace_fixer
+        language: system
+        types: [text]
+      - id: end-of-file-fixer
+        name: fix end of files
+        entry: uv run python -m pre_commit_hooks.end_of_file_fixer
+        language: system
+        types: [text]
+      - id: check-yaml
+        name: check yaml
+        entry: uv run python -m pre_commit_hooks.check_yaml --unsafe # syntax only, so bundle YAML tags pass
+        language: system
+        types: [yaml]
+      - id: check-toml
+        name: check toml
+        entry: uv run python -m pre_commit_hooks.check_toml
+        language: system
+        types: [toml]
+      - id: check-merge-conflict
+        name: check for merge conflicts
+        entry: uv run python -m pre_commit_hooks.check_merge_conflict
+        language: system
+        types: [text]
+      - id: check-added-large-files
+        name: check for added large files
+        entry: uv run python -m pre_commit_hooks.check_added_large_files --maxkb=1000
+        language: system
+      - id: detect-private-key
+        name: detect private key
+        entry: uv run python -m pre_commit_hooks.detect_private_key
+        language: system
+        types: [text]
+
+      # ruff and pytest
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+      - id: pytest
+        name: pytest
+        entry: uv run python -m pytest -q
+        language: system
+        types: [python]
+        pass_filenames: false
