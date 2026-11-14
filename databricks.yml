@@ -31,8 +31,9 @@ targets:
     mode: production
     workspace:
       host: https://dbc-f7b8452b-a4c0.cloud.databricks.com
-      # Deploy to one fixed path so there is only ever a single prod copy.
-      root_path: /Workspace/Users/fuadgafarzada@gmail.com/.bundle/${bundle.name}/${bundle.target}
+      # Prod is deployed only by CI, as the service principal, so this resolves to
+      # the service principal's folder and there is a single prod copy.
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: nba_prod
     permissions:
