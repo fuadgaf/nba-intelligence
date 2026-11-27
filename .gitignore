@@ -224,3 +224,6 @@ CLAUDE.local.md
 
 # Databricks Asset Bundles: local deploy state and build output
 .databricks/
+
+# Raw data pulled locally (it belongs in the UC Volume, not git. this is just for testing)
+data/
